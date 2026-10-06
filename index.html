@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEBAK TOKOH-TOKOH ARISAN</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Arial,sans-serif;
+  min-height:100vh;
+  overflow:hidden;
+  color:white;
+  background:#080014;
+}
+
+/* =========================
+   BACKGROUND
+========================= */
+
+.bg{
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(circle at 20% 20%,#6200ff55,transparent 35%),
+    radial-gradient(circle at 80% 70%,#ff008855,transparent 35%),
+    linear-gradient(135deg,#07000f,#19002d,#050008);
+  z-index:0;
+}
+
+.ball{
+  position:absolute;
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  filter:blur(55px);
+}
+
+.ball1{
+  background:#8b00ff;
+  left:-70px;
+  top:10%;
+  animation:a1 6s infinite alternate;
+}
+
+.ball2{
+  background:#ff0080;
+  right:-70px;
+  top:45%;
+  animation:a2 7s infinite alternate;
+}
+
+.ball3{
+  background:#00bfff;
+  left:35%;
+  bottom:-100px;
+  animation:a3 8s infinite alternate;
+}
+
+@keyframes a1{
+  to{
+    transform:translate(150px,100px);
+  }
+}
+
+@keyframes a2{
+  to{
+    transform:translate(-120px,-100px);
+  }
+}
+
+@keyframes a3{
+  to{
+    transform:translate(100px,-80px);
+  }
+}
+
+/* =========================
+   CONTAINER
+========================= */
+
+.container{
+  position:relative;
+  z-index:5;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.screen{
+  display:none;
+  width:100%;
+  max-width:520px;
+  text-align:center;
+}
+
+.screen.active{
+  display:block;
+}
+
+/* =========================
+   HOME
+========================= */
+
+.home-card{
+  padding:35px 22px;
+  border-radius:30px;
+  background:#ffffff0d;
+  border:1px solid #ffffff25;
+  box-shadow:0 20px 70px #0009;
+  backdrop-filter:blur(15px);
+}
+
+.crown{
+  font-size:60px;
+  animation:float 2s infinite;
+}
+
+@keyframes float{
+  50%{
+    transform:translateY(-10px);
+  }
+}
+
+.badge{
+  display:inline-block;
+  margin:10px 0;
+  padding:7px 15px;
+  border-radius:30px;
+  background:#ffffff12;
+  border:1px solid #ffffff22;
+  font-size:12px;
+  letter-spacing:2px;
+}
+
+.home-title{
+  font-size:36px;
+  font-weight:900;
+  line-height:1.1;
+  margin:10px 0;
+  background:linear-gradient(
+    90deg,
+    #fff,
+    #ffd700,
+    #ff4fc3,
+    #fff
+  );
+  background-size:300%;
+  -webkit-background-clip:text;
+  color:transparent;
+  animation:title 4s infinite;
+}
+
+@keyframes title{
+  50%{
+    background-position:100%;
+  }
+}
+
+.subtitle{
+  color:#ddd;
+  line-height:1.6;
+  margin:15px 0 25px;
+}
+
+.main-btn{
+  width:100%;
+  padding:17px;
+  border:0;
+  border-radius:18px;
+  background:linear-gradient(
+    90deg,
+    #7b2cff,
+    #ff1493
+  );
+  color:white;
+  font-size:17px;
+  font-weight:bold;
+  box-shadow:0 8px 30px #a000ff66;
+  cursor:pointer;
+}
+
+.main-btn:active{
+  transform:scale(.96);
+}
+
+/* =========================
+   QUIZ
+========================= */
+
+.quiz-card{
+  padding:25px 20px;
+  border-radius:25px;
+  background:#10051dcc;
+  border:1px solid #ffffff18;
+  box-shadow:0 20px 60px #0009;
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:18px;
+}
+
+.score{
+  color:#ffd700;
+  font-weight:bold;
+}
+
+.progress{
+  height:8px;
+  background:#ffffff18;
+  border-radius:20px;
+  overflow:hidden;
+  margin-bottom:25px;
+}
+
+.progress-bar{
+  height:100%;
+  width:0%;
+  background:linear-gradient(
+    90deg,
+    #7b2cff,
+    #ff1493
+  );
+  transition:.4s;
+}
+
+.question{
+  font-size:22px;
+  line-height:1.4;
+  margin-bottom:22px;
+}
+
+.answers{
+  display:grid;
+  gap:12px;
+}
+
+.answer{
+  border:1px solid #ffffff20;
+  background:#ffffff0d;
+  color:white;
+  padding:15px;
+  border-radius:15px;
+  font-size:16px;
+  text-align:left;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.answer:active{
+  transform:scale(.97);
+}
+
+.answer.correct{
+  background:#00a83b;
+  border-color:#00ff6a;
+}
+
+.answer.wrong{
+  background:#d90000;
+  border-color:#ff5555;
+}
+
+.feedback{
+  min-height:30px;
+  margin:15px 0;
+  font-weight:bold;
+}
+
+.next{
+  display:none;
+  width:100%;
+  border:0;
+  padding:14px;
+  border-radius:15px;
+  background:white;
+  color:#16001f;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* =========================
+   RESULT
+========================= */
+
+.result-card{
+  padding:30px 20px;
+  border-radius:30px;
+  background:#ffffff0d;
+  border:1px solid #ffffff22;
+  box-shadow:0 20px 80px #0009;
+}
+
+.result-title{
+  font-size:28px;
+  font-weight:bold;
+  margin:10px 0;
+}
+
+.result-score{
+  color:#ddd;
+  line-height:1.8;
+  margin-bottom:20px;
+}
+
+.hadiah-btn{
+  background:linear-gradient(
+    90deg,
+    #ff8c00,
+    #ff1493,
+    #7b2cff
+  );
+  animation:glow 1s infinite alternate;
+}
+
+@keyframes glow{
+  from{
+    box-shadow:0 0 10px #ff1493;
+  }
+  to{
+    box-shadow:0 0 35px #ff1493;
+  }
+}
+
+.close-btn{
+  margin-top:15px;
+  padding:13px 25px;
+  border:1px solid #ffffff25;
+  border-radius:14px;
+  background:#ffffff12;
+  color:white;
+  cursor:pointer;
+}
+
+/* =========================
+   FIREWORKS
+========================= */
+
+#fireworks{
+  position:fixed;
+  inset:0;
+  z-index:50;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.spark{
+  position:absolute;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:white;
+
+  box-shadow:
+    0 0 6px white,
+    0 0 12px white,
+    0 0 20px currentColor;
+
+  animation:sparkMove 1.3s ease-out forwards;
+}
+
+@keyframes sparkMove{
+
+  0%{
+    transform:
+      translate(0,0)
+      scale(1.5);
+    opacity:1;
+  }
+
+  70%{
+    opacity:1;
+  }
+
+  100%{
+    transform:
+      translate(var(--x),var(--y))
+      scale(.1);
+    opacity:0;
+  }
+}
+
+.flash{
+  position:absolute;
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+  background:white;
+
+  box-shadow:
+    0 0 20px white,
+    0 0 50px white,
+    0 0 100px white;
+
+  animation:flash .5s ease-out forwards;
+}
+
+@keyframes flash{
+
+  0%{
+    opacity:1;
+    transform:
+      translate(-50%,-50%)
+      scale(.2);
+  }
+
+  100%{
+    opacity:0;
+    transform:
+      translate(-50%,-50%)
+      scale(4);
+  }
+}
+
+/* =========================
+   HADIAH
+========================= */
+
+.gift-screen{
+  position:fixed;
+  inset:0;
+  z-index:40;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+
+  background:#030008cc;
+  backdrop-filter:blur(7px);
+}
+
+.gift-screen.show{
+  display:flex;
+}
+
+.gift-box{
+  width:100%;
+  max-width:390px;
+  padding:35px 20px;
+  text-align:center;
+  border-radius:30px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #180025,
+      #360050
+    );
+
+  border:1px solid #ffffff30;
+
+  box-shadow:
+    0 0 40px #ff1493,
+    0 0 100px #7b2cff66;
+
+  animation:giftIn .8s ease;
+}
+
+@keyframes giftIn{
+
+  0%{
+    transform:
+      scale(.2)
+      rotate(-15deg);
+    opacity:0;
+  }
+
+  70%{
+    transform:
+      scale(1.08)
+      rotate(3deg);
+  }
+
+  100%{
+    transform:
+      scale(1)
+      rotate(0);
+    opacity:1;
+  }
+}
+
+.gift-label{
+  color:#ffd700;
+  font-size:13px;
+  letter-spacing:3px;
+}
+
+.gift-emoji{
+  font-size:85px;
+  margin:12px 0;
+  animation:giftBounce 1s infinite;
+}
+
+@keyframes giftBounce{
+
+  50%{
+    transform:
+      translateY(-12px)
+      scale(1.08);
+  }
+}
+
+.gift-name{
+  font-size:28px;
+  font-weight:900;
+  margin-bottom:12px;
+}
+
+.gift-text{
+  color:#ddd;
+  line-height:1.6;
+}
+
+.closeGift{
+  margin-top:25px;
+  padding:13px 25px;
+  border:0;
+  border-radius:14px;
+  background:white;
+  color:#190020;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:400px){
+
+  .home-title{
+    font-size:30px;
+  }
+
+  .question{
+    font-size:20px;
+  }
+
+  .gift-name{
+    font-size:24px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- BACKGROUND -->
+
+<div class="bg">
+
+  <div class="ball ball1"></div>
+  <div class="ball ball2"></div>
+  <div class="ball ball3"></div>
+
+</div>
+
+
+<!-- FIREWORKS -->
+
+<div id="fireworks"></div>
+
+
+<div class="container">
+
+  <!-- =====================
+       HOME
+  ====================== -->
+
+  <div id="home" class="screen active">
+
+    <div class="home-card">
+
+      <div class="crown">
+        👑
+      </div>
+
+      <div class="badge">
+        ✦ ARISAN 2026 ✦
+      </div>
+
+      <div class="home-title">
+        TEBAK TOKOH-TOKOH ARISAN
+      </div>
+
+      <div class="subtitle">
+
+        Seberapa kenal kamu dengan mereka?
+
+        <br><br>
+
+        <b>
+          8 Pertanyaan • 4 Pilihan • 1 Hadiah
+        </b>
+
+      </div>
+
+      <button
+        id="startButton"
+        class="main-btn">
+
+        🚀 MULAI BERMAIN
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================
+       QUIZ
+  ====================== -->
+
+  <div id="quiz" class="screen">
+
+    <div class="quiz-card">
+
+      <div class="top">
+
+        <span id="number">
+          Pertanyaan 1/8
+        </span>
+
+        <span class="score">
+          ⭐
+          <span id="score">
+            0
+          </span>
+        </span>
+
+      </div>
+
+
+      <div class="progress">
+
+        <div
+          id="progressBar"
+          class="progress-bar">
+        </div>
+
+      </div>
+
+
+      <div
+        id="question"
+        class="question">
+      </div>
+
+
+      <div
+        id="answers"
+        class="answers">
+      </div>
+
+
+      <div
+        id="feedback"
+        class="feedback">
+      </div>
+
+
+      <button
+        id="nextButton"
+        class="next">
+
+        LANJUT ➜
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================
+       RESULT
+  ====================== -->
+
+  <div id="result" class="screen">
+
+    <div class="result-card">
+
+      <div style="font-size:60px">
+        🎉
+      </div>
+
+      <div class="result-title">
+        PERMAINAN SELESAI!
+      </div>
+
+      <div
+        id="resultScore"
+        class="result-score">
+      </div>
+
+      <button
+        id="giftButton"
+        class="main-btn hadiah-btn">
+
+        🎁 LIHAT HADIAH
+
+      </button>
+
+      <br>
+
+      <button
+        id="restartButton"
+        class="close-btn">
+
+        🔄 MAIN LAGI
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =====================
+     POPUP HADIAH
+====================== -->
+
+<div
+  id="giftScreen"
+  class="gift-screen">
+
+  <div class="gift-box">
+
+    <div class="gift-label">
+      ✨ HADIAH KAMU ✨
+    </div>
+
+    <div
+      id="giftEmoji"
+      class="gift-emoji">
+
+      🎁
+
+    </div>
+
+    <div
+      id="giftName"
+      class="gift-name">
+
+      HADIAH
+
+    </div>
+
+    <div
+      id="giftText"
+      class="gift-text">
+
+      Selamat!
+
+    </div>
+
+    <button
+      id="closeGift"
+      class="closeGift">
+
+      TUTUP
+
+    </button>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   DATA PERTANYAAN
+========================= */
+
+var questions = [
+
+  {
+    q:"Siapa yang paling pikmi di Arisan?",
+    a:[
+      "Fantry",
+      "Devana",
+      "Jembo",
+      "Dimas"
+    ],
+    c:"Fantry"
+  },
+
+  {
+    q:"Siapa yang paling kuat baomong orang di Arisan?",
+    a:[
+      "Jembo",
+      "Devana",
+      "Andro",
+      "Irenee"
+    ],
+    c:"Devana"
+  },
+
+  {
+    q:"Siapa yang paling suka sok cantik?",
+    a:[
+      "Sany",
+      "Fantry",
+      "Dimas",
+      "Aldyy"
+    ],
+    c:"Sany"
+  },
+
+  {
+    q:"Siapa yang paling suka benci orang?",
+    a:[
+      "Irenee",
+      "Devana",
+      "Jembo",
+      "Andro"
+    ],
+    c:"Devana"
+  },
+
+  {
+    q:"Siapa yang paling suka tambah kalo makan?",
+    a:[
+      "Aldyy",
+      "Andro",
+      "Dimas",
+      "Fantry"
+    ],
+    c:"Andro"
+  },
+
+  {
+    q:"Siapa yang paling suka pi gereja?",
+    a:[
+      "Jembo",
+      "Sany",
+      "Andro",
+      "Devana"
+    ],
+    c:"Jembo"
+  },
+
+  {
+    q:"Siapa yang paling cantik di Arisan?",
+    a:[
+      "Irenee",
+      "Sany",
+      "Devana",
+      "Fantry"
+    ],
+    c:"Irenee"
+  },
+
+  /* =========================
+     PERTANYAAN ALDYY
+  ========================= */
+
+  {
+    q:"Siapa yang paling ganteng di dunia?",
+    a:[
+      "Aldyy",
+      "Aldyy",
+      "Aldyy",
+      "Aldyy"
+    ],
+    c:"Aldyy"
+  }
+
+];
+
+
+var current = 0;
+var score = 0;
+var wrong = 0;
+
+
+/* =========================
+   SCREEN
+========================= */
+
+function screen(id){
+
+  var s =
+    document.getElementsByClassName("screen");
+
+  for(var i=0;i<s.length;i++){
+
+    s[i].classList.remove("active");
+
+  }
+
+  document
+    .getElementById(id)
+    .classList.add("active");
+}
+
+
+/* =========================
+   SHUFFLE
+========================= */
+
+function shuffle(arr){
+
+  var x = arr.slice();
+
+  for(
+    var i=x.length-1;
+    i>0;
+    i--
+  ){
+
+    var j =
+      Math.floor(
+        Math.random()*(i+1)
+      );
+
+    var temp=x[i];
+
+    x[i]=x[j];
+    x[j]=temp;
+
+  }
+
+  return x;
+}
+
+
+/* =========================
+   MULAI
+========================= */
+
+document
+.getElementById("startButton")
+.onclick=function(){
+
+  current=0;
+  score=0;
+  wrong=0;
+
+  document
+    .getElementById("score")
+    .innerHTML="0";
+
+  screen("quiz");
+
+  loadQuestion();
+
+};
+
+
+/* =========================
+   LOAD QUESTION
+========================= */
+
+function loadQuestion(){
+
+  var data =
+    questions[current];
+
+  document
+    .getElementById("number")
+    .innerHTML =
+      "Pertanyaan "+
+      (current+1)+
+      "/"+
+      questions.length;
+
+
+  document
+    .getElementById("question")
+    .innerHTML =
+      data.q;
+
+
+  document
+    .getElementById("progressBar")
+    .style.width =
+      ((current+1)/
+      questions.length*100)+
+      "%";
+
+
+  document
+    .getElementById("feedback")
+    .innerHTML="";
+
+
+  document
+    .getElementById("nextButton")
+    .style.display="none";
+
+
+  var box =
+    document.getElementById("answers");
+
+  box.innerHTML="";
+
+
+  var pilihan =
+    shuffle(data.a);
+
+
+  for(
+    var i=0;
+    i<pilihan.length;
+    i++
+  ){
+
+    var btn =
+      document.createElement("button");
+
+    btn.className="answer";
+
+    btn.innerHTML=
+      pilihan[i];
+
+    btn.onclick=function(){
+
+      checkAnswer(this);
+
+    };
+
+    box.appendChild(btn);
+
+  }
+
+}
+
+
+/* =========================
+   CHECK ANSWER
+========================= */
+
+function checkAnswer(btn){
+
+  var buttons =
+    document.getElementsByClassName(
+      "answer"
+    );
+
+
+  for(
+    var i=0;
+    i<buttons.length;
+    i++
+  ){
+
+    buttons[i].disabled=true;
+
+  }
+
+
+  if(
+    btn.innerHTML ==
+    questions[current].c
+  ){
+
+    btn.classList.add("correct");
+
+    score++;
+
+    document
+      .getElementById("score")
+      .innerHTML=score;
+
+    document
+      .getElementById("feedback")
+      .innerHTML=
+      "🎉 BENAR! Mantap!";
+
+  }
+
+  else{
+
+    btn.classList.add("wrong");
+
+    wrong++;
+
+    document
+      .getElementById("feedback")
+      .innerHTML=
+      "😂 SALAH! Jawaban: "+
+      questions[current].c;
+
+
+    for(
+      var j=0;
+      j<buttons.length;
+      j++
+    ){
+
+      if(
+        buttons[j].innerHTML ==
+        questions[current].c
+      ){
+
+        buttons[j]
+          .classList
+          .add("correct");
+
+      }
+
+    }
+
+  }
+
+
+  document
+    .getElementById("nextButton")
+    .style.display="block";
+
+}
+
+
+/* =========================
+   NEXT
+========================= */
+
+document
+.getElementById("nextButton")
+.onclick=function(){
+
+  current++;
+
+  if(
+    current <
+    questions.length
+  ){
+
+    loadQuestion();
+
+  }
+
+  else{
+
+    screen("result");
+
+    document
+      .getElementById("resultScore")
+      .innerHTML =
+        "Benar: "+
+        score+
+        " / "+
+        questions.length+
+        "<br>Salah: "+
+        wrong;
+
+  }
+
+};
+
+
+/* =========================
+   HADIAH
+========================= */
+
+document
+.getElementById("giftButton")
+.onclick=function(){
+
+  var emoji;
+  var name;
+  var text;
+
+
+  if(wrong==0){
+
+    emoji="👑";
+
+    name="MASTER ARISAN";
+
+    text=
+      "Sempurna! Kamu benar-benar menguasai Arisan!";
+
+  }
+
+  else if(wrong==1){
+
+    emoji="🐟🔥";
+
+    name="IKAN BAKAR LILIBA";
+
+    text=
+      "Cuma salah satu! Kamu pantas dapat ikan bakar Liliba!";
+
+  }
+
+  else if(wrong==2){
+
+    emoji="🍗";
+
+    name="AYAM GEPREK";
+
+    text=
+      "Dua kesalahan. Ayam geprek menunggumu!";
+
+  }
+
+  else if(wrong==3){
+
+    emoji="🥟";
+
+    name="GORENGAN";
+
+    text=
+      "Tiga kali salah. Gorengan dulu! 😂";
+
+  }
+
+  else if(wrong==4){
+
+    emoji="🥤";
+
+    name="ES TELLER";
+
+    text=
+      "Empat kesalahan. Dinginkan kepala dengan es teller!";
+
+  }
+
+  else{
+
+    emoji="🙏";
+
+    name="HIKMAH";
+
+    text=
+      "Yang penting bukan menangnya... tapi hikmah yang didapat! 😂🙏";
+
+  }
+
+
+  document
+    .getElementById("giftEmoji")
+    .innerHTML=emoji;
+
+
+  document
+    .getElementById("giftName")
+    .innerHTML=name;
+
+
+  document
+    .getElementById("giftText")
+    .innerHTML=text;
+
+
+  document
+    .getElementById("giftScreen")
+    .classList
+    .add("show");
+
+
+  /* MULAI KEMBANG API */
+
+  startFireworks();
+
+};
+
+
+/* =========================
+   KEMBANG API
+========================= */
+
+function startFireworks(){
+
+  var container =
+    document.getElementById(
+      "fireworks"
+    );
+
+  container.innerHTML="";
+
+
+  for(
+    var b=0;
+    b<12;
+    b++
+  ){
+
+    setTimeout(
+      function(){
+
+        createFirework();
+
+      },
+      b*350
+    );
+
+  }
+
+}
+
+
+/* =========================
+   SATU LEDAKAN
+========================= */
+
+function createFirework(){
+
+  var container =
+    document.getElementById(
+      "fireworks"
+    );
+
+
+  var x =
+    10+
+    Math.random()*80;
+
+
+  var y =
+    15+
+    Math.random()*55;
+
+
+  /* FLASH */
+
+  var flash =
+    document.createElement(
+      "div"
+    );
+
+  flash.className="flash";
+
+  flash.style.left=
+    x+"%";
+
+  flash.style.top=
+    y+"%";
+
+  container.appendChild(
+    flash
+  );
+
+
+  /* PARTIKEL */
+
+  for(
+    var i=0;
+    i<50;
+    i++
+  ){
+
+    var spark =
+      document.createElement(
+        "div"
+      );
+
+    spark.className="spark";
+
+    spark.style.left=
+      x+"%";
+
+    spark.style.top=
+      y+"%";
+
+
+    var angle =
+      (Math.PI*2/50)*i;
+
+
+    var distance =
+      70+
+      Math.random()*200;
+
+
+    var dx =
+      Math.cos(angle)*
+      distance;
+
+
+    var dy =
+      Math.sin(angle)*
+      distance;
+
+
+    spark.style.setProperty(
+      "--x",
+      dx+"px"
+    );
+
+
+    spark.style.setProperty(
+      "--y",
+      dy+"px"
+    );
+
+
+    var hue =
+      Math.floor(
+        Math.random()*360
+      );
+
+
+    spark.style.color =
+      "hsl("+
+      hue+
+      ",100%,70%)";
+
+
+    spark.style.background =
+      spark.style.color;
+
+
+    container.appendChild(
+      spark
+    );
+
+  }
+
+
+  setTimeout(
+    function(){
+
+      if(
+        container.children.length>
+        300
+      ){
+
+        container.innerHTML="";
+
+      }
+
+    },
+    1500
+  );
+
+}
+
+
+/* =========================
+   CLOSE GIFT
+========================= */
+
+document
+.getElementById("closeGift")
+.onclick=function(){
+
+  document
+    .getElementById("giftScreen")
+    .classList
+    .remove("show");
+
+
+  document
+    .getElementById("fireworks")
+    .innerHTML="";
+
+};
+
+
+/* =========================
+   RESTART
+========================= */
+
+document
+.getElementById("restartButton")
+.onclick=function(){
+
+  current=0;
+  score=0;
+  wrong=0;
+
+  document
+    .getElementById("score")
+    .innerHTML="0";
+
+  screen("quiz");
+
+  loadQuestion();
+
+};
+
+</script>
+
+</body>
+</html>
